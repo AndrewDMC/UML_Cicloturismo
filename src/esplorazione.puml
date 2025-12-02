@@ -1,4 +1,4 @@
-@startuml 
+@startuml Esplorazione
 
 left to right direction 
 skinparam packageStyle rectangle 
@@ -7,7 +7,7 @@ skinparam linetype ortho
 actor "Cicloturista" as User 
 actor "Ente Pubblico" as Ente 
 
-rectangle "Esplorazione e Mappe" { 
+rectangle "UCD2 - Esplorazione e Mappe" { 
 
     usecase "RF5 - Esplorazione percorsi" as RF5 
     usecase "RF2 - Visualizzatore mappa" as RF2 

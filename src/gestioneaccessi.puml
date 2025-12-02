@@ -1,4 +1,4 @@
-@startuml 
+@startuml GestioneAccessi
 
 left to right direction 
 skinparam packageStyle rectangle 
@@ -8,7 +8,7 @@ actor "Cicloturista" as User
 actor "Ente Pubblico" as Ente 
 actor "Admin Piattaforma" as Admin   
 
-rectangle "Gestione Accessi" { 
+rectangle "UCD1 - Gestione Accessi" { 
 
     usecase "RF0 - Registrazione" as RF0 
     usecase "RF1 - Login Utente" as RF1 
@@ -23,7 +23,7 @@ User --> RF1
 Ente --> RF20 
 Admin --> RF22 
 Admin --> RF21
- 
+
 ' Releazioni
 RF20 ..> RF22 : <<include>> 
 

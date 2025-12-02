@@ -1,0 +1,32 @@
+@startuml  Community
+
+left to right direction  
+
+skinparam packageStyle rectangle  
+skinparam linetype ortho    
+
+actor "Cicloturista" as User  
+actor "Ente Pubblico" as Ente  
+
+rectangle "UCD4 - Community & Segnalazioni" {  
+
+    usecase "RF1 - Login Utente" as RF1 
+    usecase "RF8 - Sistema di segnalazione\n(Criticità, Lavori)" as RF8  
+    usecase "RF16 - Inserimento immagini" as RF16  
+    usecase "RF15 - Gestione Recensioni" as RF15  
+    usecase "RF7 - Notifiche alta priorità" as RF7  
+
+}  
+
+User --> RF8  
+User --> RF15  
+User --> RF7 : (Riceve avviso)  
+Ente --> RF8 : (Monitora segnalazioni)  
+
+' Relazioni  
+
+RF8 ..> RF1 : <<include>>  
+RF15 ..> RF1 : <<include>>  
+RF16 ..> RF8 : <<extend>>  
+
+@enduml 

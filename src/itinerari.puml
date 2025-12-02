@@ -1,4 +1,4 @@
-@startuml  
+@startuml Itinerari
 
 left to right direction  
 skinparam packageStyle rectangle  
@@ -6,8 +6,9 @@ skinparam linetype ortho
 
 actor "Cicloturista" as User  
 actor "Admin Piattaforma" as Admin 
+actor "Ente Pubblico" as Ente 
 
-rectangle "Area Personale & Itinerari" {  
+rectangle "UCD3 - Gestione Itinerari" {  
 
     usecase "RF1 - Login Utente" as RF1  
     usecase "RF6 - Creazione itinerari" as RF6  
@@ -25,6 +26,7 @@ User --> RF6
 User --> RF11  
 User --> RF1 
 Admin --> RF9 
+Ente --> RF10
 
 ' Relazioni  
 

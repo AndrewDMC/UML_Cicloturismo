@@ -1,4 +1,4 @@
-@startuml  
+@startuml  BackOffice
 
 left to right direction  
 skinparam packageStyle rectangle 
@@ -6,7 +6,7 @@ skinparam packageStyle rectangle
 actor "Ente Pubblico" as Ente  
 actor "Admin Piattaforma" as Admin 
 
-rectangle "Pannello di Controllo Ente" {  
+rectangle "UCD5 - BackOffice" {  
 
     usecase "RF20 - Login Ente" as RF20 
     usecase "RF23 - Aggiornamento Dati Ciclovie" as RF23  

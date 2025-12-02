@@ -8,10 +8,10 @@ actor "Cicloturista" as User
 actor "Ente Pubblico" as Ente
 actor "Admin Piattaforma" as Admin
 
-rectangle "Piattaforma Cicloturismo" {
+rectangle "UCD0 - Piattaforma Cicloturismo" {
 
     ' ACCESSO E IDENTIFICAZIONE
-    rectangle "Gestione Accessi" {
+    rectangle "UCD1 - Gestione Accessi" {
         usecase "RF0 - Registrazione" as RF0
         usecase "RF1 - Login Utente" as RF1
         usecase "RF20 - Login Ente Pubblico" as RF20
@@ -20,7 +20,7 @@ rectangle "Piattaforma Cicloturismo" {
     }
 
     ' ESPLORAZIONE
-    rectangle "Esplorazione e Mappe" {
+    rectangle "UCD2 - Esplorazione e Mappe" {
         usecase "RF5 - Esplorazione percorsi" as RF5
         usecase "RF2 - Visualizzatore mappa" as RF2
         usecase "RF3 - Visualizzatore meteo" as RF3
@@ -30,7 +30,7 @@ rectangle "Piattaforma Cicloturismo" {
     }
 
     ' ITINERARI
-    rectangle "Gestione Itinerari" {
+    rectangle "UCD3 - Gestione Itinerari" {
         usecase "RF6 - Creazione itinerari" as RF6
         usecase "RF11 - Gestione itinerari privati" as RF11
         usecase "RF10 - Pubblicazione itinerario" as RF10
@@ -42,7 +42,7 @@ rectangle "Piattaforma Cicloturismo" {
     }
 
     ' COMMUNITY E SEGNALAZIONI
-    rectangle "Community & Segnalazioni" {
+    rectangle "UCD4 - Community e Segnalazioni" {
         usecase "RF8 - Sistema di segnalazione" as RF8
         usecase "RF16 - Inserimento immagini" as RF16
         usecase "RF15 - Gestione Recensioni" as RF15
@@ -50,13 +50,11 @@ rectangle "Piattaforma Cicloturismo" {
     }
 
     ' BACK OFFICE
-    rectangle "Back-Office & Analisi" {
+    rectangle "UCD5 - BackOffice" {
         usecase "RF23 - Aggiornamento Dati Ciclovie" as RF23
         usecase "RF24 - Analisi Dati Raccolti" as RF24
     }
 }
-
-' --- RELAZIONI ATTORI ---
 
 ' Cicloturista
 User --> RF0
@@ -74,14 +72,13 @@ Ente --> RF17
 Ente --> RF8
 Ente --> RF23
 Ente --> RF17
+Ente --> RF10
 
 ' Admin Piattaforma
 Admin --> RF22
 Admin --> RF21
 Admin --> RF9
 Admin --> RF24
-
-' --- RELAZIONI INCLUDE E EXTEND ---
 
 ' Relazioni Area Accesso
 RF20 ..> RF22 : <<include>>
