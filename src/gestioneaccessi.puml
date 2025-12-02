@@ -1,0 +1,30 @@
+@startuml 
+
+left to right direction 
+skinparam packageStyle rectangle 
+skinparam linetype ortho 
+
+actor "Cicloturista" as User 
+actor "Ente Pubblico" as Ente 
+actor "Admin Piattaforma" as Admin   
+
+rectangle "Gestione Accessi" { 
+
+    usecase "RF0 - Registrazione" as RF0 
+    usecase "RF1 - Login Utente" as RF1 
+    usecase "RF20 - Login Ente Pubblico" as RF20 
+    usecase "RF 21 - Gestione Utenze Enti" as RF21 
+    usecase "RF 22 - Registrazione Ente Pubblico" as RF22 
+
+} 
+
+User --> RF0 
+User --> RF1 
+Ente --> RF20 
+Admin --> RF22 
+Admin --> RF21
+ 
+' Releazioni
+RF20 ..> RF22 : <<include>> 
+
+@enduml 

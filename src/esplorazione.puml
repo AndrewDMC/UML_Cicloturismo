@@ -1,0 +1,32 @@
+@startuml 
+
+left to right direction 
+skinparam packageStyle rectangle 
+skinparam linetype ortho  
+
+actor "Cicloturista" as User 
+actor "Ente Pubblico" as Ente 
+
+rectangle "Esplorazione e Mappe" { 
+
+    usecase "RF5 - Esplorazione percorsi" as RF5 
+    usecase "RF2 - Visualizzatore mappa" as RF2 
+    usecase "RF3 - Visualizzatore meteo" as RF3 
+    usecase "RF4 - Visualizzatore POI" as RF4 
+    usecase "RF19 - Audiodescrizione" as RF19 
+    usecase "RF17 - Bacheca eventi" as RF17 
+
+} 
+
+User --> RF5 
+Ente --> RF17 
+
+' Relazioni 
+
+RF5 ..> RF2 : <<include>>
+RF3 ..> RF5 : <<extend>> 
+RF4 ..> RF5 : <<extend>> 
+RF19 ..> RF5 : <<extend>> 
+RF17 ..> RF5 : <<extend>> 
+
+@enduml 

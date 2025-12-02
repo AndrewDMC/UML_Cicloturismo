@@ -1,0 +1,26 @@
+@startuml  
+
+left to right direction  
+skinparam packageStyle rectangle 
+
+actor "Ente Pubblico" as Ente  
+actor "Admin Piattaforma" as Admin 
+
+rectangle "Pannello di Controllo Ente" {  
+
+    usecase "RF20 - Login Ente" as RF20 
+    usecase "RF23 - Aggiornamento Dati Ciclovie" as RF23  
+    usecase "RF17 - Gestione Bacheca eventi" as RF17 
+    usecase "RF24 - Analisi Dati Raccolti" as RF24   
+
+}  
+
+Ente --> RF23  
+Ente --> RF17 
+Admin --> RF24  
+
+'Inclusioni 
+RF23 ..> RF20 : <<include>>  
+RF17 ..> RF20 : <<include>>  
+
+@enduml 

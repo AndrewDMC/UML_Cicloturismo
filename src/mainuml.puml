@@ -1,0 +1,117 @@
+@startuml Main
+left to right direction
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+' --- ATTORI ---
+actor "Cicloturista" as User
+actor "Ente Pubblico" as Ente
+actor "Admin Piattaforma" as Admin
+
+rectangle "Piattaforma Cicloturismo" {
+
+    ' ACCESSO E IDENTIFICAZIONE
+    rectangle "Gestione Accessi" {
+        usecase "RF0 - Registrazione" as RF0
+        usecase "RF1 - Login Utente" as RF1
+        usecase "RF20 - Login Ente Pubblico" as RF20
+        usecase "RF21 - Gestione Utenze Enti" as RF21
+        usecase "RF22 - Registrazione Ente Pubblico" as RF22
+    }
+
+    ' ESPLORAZIONE
+    rectangle "Esplorazione e Mappe" {
+        usecase "RF5 - Esplorazione percorsi" as RF5
+        usecase "RF2 - Visualizzatore mappa" as RF2
+        usecase "RF3 - Visualizzatore meteo" as RF3
+        usecase "RF4 - Visualizzatore POI" as RF4
+        usecase "RF19 - Audiodescrizione" as RF19
+        usecase "RF17 - Bacheca eventi" as RF17
+    }
+
+    ' ITINERARI
+    rectangle "Gestione Itinerari" {
+        usecase "RF6 - Creazione itinerari" as RF6
+        usecase "RF11 - Gestione itinerari privati" as RF11
+        usecase "RF10 - Pubblicazione itinerario" as RF10
+        usecase "RF12 - Copia itinerario" as RF12
+        usecase "RF13 - Modifica Itinerario" as RF13
+        usecase "RF14 - Gestione Storico" as RF14
+        usecase "RF18 - Recording percorso" as RF18
+        usecase "RF9 - Raccolta dati (Facoltativa)" as RF9
+    }
+
+    ' COMMUNITY E SEGNALAZIONI
+    rectangle "Community & Segnalazioni" {
+        usecase "RF8 - Sistema di segnalazione" as RF8
+        usecase "RF16 - Inserimento immagini" as RF16
+        usecase "RF15 - Gestione Recensioni" as RF15
+        usecase "RF7 - Notifiche alta priorità" as RF7
+    }
+
+    ' BACK OFFICE
+    rectangle "Back-Office & Analisi" {
+        usecase "RF23 - Aggiornamento Dati Ciclovie" as RF23
+        usecase "RF24 - Analisi Dati Raccolti" as RF24
+    }
+}
+
+' --- RELAZIONI ATTORI ---
+
+' Cicloturista
+User --> RF0
+User --> RF1
+User --> RF5
+User --> RF6
+User --> RF11
+User --> RF8
+User --> RF15
+User --> RF7
+
+' Ente Pubblico
+Ente --> RF20
+Ente --> RF17
+Ente --> RF8
+Ente --> RF23
+Ente --> RF17
+
+' Admin Piattaforma
+Admin --> RF22
+Admin --> RF21
+Admin --> RF9
+Admin --> RF24
+
+' --- RELAZIONI INCLUDE E EXTEND ---
+
+' Relazioni Area Accesso
+RF20 ..> RF22 : <<include>>
+
+' Relazioni Area Esplorazione
+RF5 ..> RF2 : <<include>>
+RF3 ..> RF5 : <<extend>>
+RF4 ..> RF5 : <<extend>>
+RF19 ..> RF5 : <<extend>>
+RF17 ..> RF5 : <<extend>>
+
+' Relazioni Area Itinerari 
+RF6 ..> RF1 : <<include>>
+RF11 ..> RF1 : <<include>>
+
+RF10 ..> RF6 : <<extend>>
+RF18 ..> RF6 : <<extend>>
+RF9 ..> RF18 : <<extend>>
+
+RF12 ..> RF11 : <<extend>>
+RF13 ..> RF11 : <<extend>>
+RF14 ..> RF11 : <<extend>>
+
+' Relazioni Area Community
+RF8 ..> RF1 : <<include>>
+RF15 ..> RF1 : <<include>>
+RF16 ..> RF8 : <<extend>>
+
+' Relazioni Back-Office 
+RF23 ..> RF20 : <<include>>
+RF17 ..> RF20 : <<include>> 
+
+@enduml
