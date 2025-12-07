@@ -1,114 +1,114 @@
 @startuml Main
 left to right direction
 skinparam packageStyle rectangle
-skinparam linetype ortho
+
+' Configurazione colori e stili per pulizia
+skinparam usecase {
+    BackgroundColor White
+    BorderColor DarkSlateGray
+    ArrowColor Black
+}
+skinparam rectangle {
+    BorderColor Black
+    BackgroundColor WhiteSmoke
+}
 
 ' --- ATTORI ---
 actor "Cicloturista" as User
 actor "Ente Pubblico" as Ente
-actor "Admin Piattaforma" as Admin
+actor "Admin Piattaforma" as Admin 
 
-rectangle "UCD0 - Piattaforma Cicloturismo" {
+rectangle "Piattaforma Cicloturismo" {
 
-    ' ACCESSO E IDENTIFICAZIONE
-    rectangle "UCD1 - Gestione Accessi" {
-        usecase "RF0 - Registrazione" as RF0
-        usecase "RF1 - Login Utente" as RF1
-        usecase "RF20 - Login Ente Pubblico" as RF20
-        usecase "RF21 - Gestione Utenze Enti" as RF21
-        usecase "RF22 - Registrazione Ente Pubblico" as RF22
+    ' --- SB0: AUTENTICAZIONE ---
+    rectangle "SB0 - Autenticazione" as SB0 {
+        usecase "RF0.2 - Login" as RF0_2
+        usecase "RF0.0 - Registrazione\ncicloturista" as RF0_0
+        usecase "RF0.1 - Registrazione\nutente privilegiato" as RF0_1
+        usecase "RF0.2.0 - Login provider\nesterni" as RF0_2_0
+        
+        ' Relazioni interne SB0
+        RF0_2_0 .> RF0_2 : <<extend>>
     }
 
-    ' ESPLORAZIONE
-    rectangle "UCD2 - Esplorazione e Mappe" {
-        usecase "RF5 - Esplorazione percorsi" as RF5
-        usecase "RF2 - Visualizzatore mappa" as RF2
-        usecase "RF3 - Visualizzatore meteo" as RF3
-        usecase "RF4 - Visualizzatore POI" as RF4
-        usecase "RF19 - Audiodescrizione" as RF19
-        usecase "RF17 - Bacheca eventi" as RF17
+    ' --- SB1: SEGNALAZIONI ---
+    rectangle "SB1 - Segnalazioni" as SB1 {
+        usecase "RF1.0 - Creazione\nsegnalazione" as RF1_0
+        usecase "RF1.1 - Invio\nnotifiche" as RF1_1
+        
+        ' Relazioni interne SB1
+        RF1_1 .> RF1_0 : <<include>>
     }
 
-    ' ITINERARI
-    rectangle "UCD3 - Gestione Itinerari" {
-        usecase "RF6 - Creazione itinerari" as RF6
-        usecase "RF11 - Gestione itinerari privati" as RF11
-        usecase "RF10 - Pubblicazione itinerario" as RF10
-        usecase "RF12 - Copia itinerario" as RF12
-        usecase "RF13 - Modifica Itinerario" as RF13
-        usecase "RF14 - Gestione Storico" as RF14
-        usecase "RF18 - Recording percorso" as RF18
-        usecase "RF9 - Raccolta dati (Facoltativa)" as RF9
-    }
+    ' --- SB2: ESPLORAZIONE & ITINERARI ---
+    rectangle "SB2 - Esplorazione percorsi" as SB2 {
+        
+        ' Sottogruppo Mappa
+        package "Visualizzazione" {
+            usecase "RF2.0 - Visualizzatore mappa" as RF2_0
+            usecase "RF2.1 - POI" as RF2_1
+            usecase "RF2.7 - Audiodescrizione" as RF2_7
+            usecase "RF3 - Meteo area" as RF3
+        }
 
-    ' COMMUNITY E SEGNALAZIONI
-    rectangle "UCD4 - Community e Segnalazioni" {
-        usecase "RF8 - Sistema di segnalazione" as RF8
-        usecase "RF16 - Inserimento immagini" as RF16
-        usecase "RF15 - Gestione Recensioni" as RF15
-        usecase "RF7 - Notifiche alta priorità" as RF7
-    }
+        ' Sottogruppo Community
+        package "Community e Bacheche" {
+            usecase "RF2.2 - Bacheca itinerari" as RF2_2
+            usecase "RF4 - Bacheca Eventi" as RF4
+            usecase "RF2.6 - Inserimento\nrecensione" as RF2_6
+        }
+        
+        ' Sottogruppo Gestione Itinerari
+        package "Gestione Itinerari" {
+            usecase "RF2.3 - Creazione itinerari\n(Base esistente)" as RF2_3
+            usecase "RF2.3.0 - Copia privata" as RF2_3_0
+            usecase "RF2.3.1 - Modifica privata" as RF2_3_1
+            usecase "RF2.3.2 - Pubblicazione" as RF2_3_2
+            usecase "RF2.4 - Creazione itinerari\n(Recording)" as RF2_4
+            usecase "RF2.5 - Gestione storico" as RF2_5
+        }
+        
+        usecase "RF5 - Raccolta dati" as RF5
 
-    ' BACK OFFICE
-    rectangle "UCD5 - BackOffice" {
-        usecase "RF23 - Aggiornamento Dati Ciclovie" as RF23
-        usecase "RF24 - Analisi Dati Raccolti" as RF24
+        ' Relazioni interne SB2 (Visualizzazione)
+        RF2_1 .up.> RF2_0 : <<extend>>
+        RF2_7 .up.> RF2_0 : <<extend>>
+        RF3 .up.> RF2_0 : <<extend>>
+
+        ' Relazioni interne SB2 (Itinerari)
+        RF2_3 .up.> RF2_2 : <<extend>>
+        RF2_6 .up.> RF2_2 : <<extend>>
+        
+        RF2_3_0 .up.> RF2_3 : <<include>>
+        RF2_3_1 .up.> RF2_3 : <<include>>
+        RF2_3_2 .down.> RF2_3 : <<extend>>
     }
 }
 
-' Cicloturista
-User --> RF0
-User --> RF1
-User --> RF5
-User --> RF6
-User --> RF11
-User --> RF8
-User --> RF15
-User --> RF7
+' --- RELAZIONI ESTERNE ---
 
-' Ente Pubblico
-Ente --> RF20
-Ente --> RF17
-Ente --> RF8
-Ente --> RF23
-Ente --> RF17
-Ente --> RF10
+' Cicloturista (Sinistra)
+User --> RF0_0
+User --> RF0_2
+User --> RF2_0
+User --> RF2_2
+User --> RF1_0
+User --> RF2_4
+User --> RF2_5
 
-' Admin Piattaforma
-Admin --> RF22
-Admin --> RF21
-Admin --> RF9
-Admin --> RF24
+' Ente Pubblico (Sinistra)
+Ente --> RF0_2
+Ente --> RF4
+Ente --> RF1_0
 
-' Relazioni Area Accesso
-RF20 ..> RF22 : <<include>>
+' Admin (Destra)
+RF0_1 <-- Admin
+RF0_2 <-- Admin
+RF5 <-- Admin
+RF1_1 <-- Admin
 
-' Relazioni Area Esplorazione
-RF5 ..> RF2 : <<include>>
-RF3 ..> RF5 : <<extend>>
-RF4 ..> RF5 : <<extend>>
-RF19 ..> RF5 : <<extend>>
-RF17 ..> RF5 : <<extend>>
-
-' Relazioni Area Itinerari 
-RF6 ..> RF1 : <<include>>
-RF11 ..> RF1 : <<include>>
-
-RF10 ..> RF6 : <<extend>>
-RF18 ..> RF6 : <<extend>>
-RF9 ..> RF18 : <<extend>>
-
-RF12 ..> RF11 : <<extend>>
-RF13 ..> RF11 : <<extend>>
-RF14 ..> RF11 : <<extend>>
-
-' Relazioni Area Community
-RF8 ..> RF1 : <<include>>
-RF15 ..> RF1 : <<include>>
-RF16 ..> RF8 : <<extend>>
-
-' Relazioni Back-Office 
-RF23 ..> RF20 : <<include>>
-RF17 ..> RF20 : <<include>> 
+' Layout hints (Ora funzionano sui rettangoli, non creano attori)
+SB0 -[hidden]down- SB1
+SB1 -[hidden]down- SB2
 
 @enduml

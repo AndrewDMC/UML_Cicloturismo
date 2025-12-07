@@ -1,0 +1,34 @@
+@startuml SB1_Segnalazioni
+left to right direction
+skinparam packageStyle rectangle
+
+' Stile
+skinparam usecase {
+    BackgroundColor White
+    BorderColor DarkSlateGray
+    ArrowColor Black
+}
+
+' Attori
+actor "Cicloturista" as User
+actor "Ente Pubblico" as Ente
+actor "Admin Piattaforma" as Admin 
+
+rectangle "SB1 - Segnalazioni" {
+    usecase "RF1.0 - Creazione\nsegnalazione" as RF1_0
+    usecase "RF1.1 - Invio\nnotifiche" as RF1_1
+    
+    ' Relazioni interne
+    RF1_1 .> RF1_0 : <<include>>
+}
+
+' Relazioni Esterne
+User --> RF1_0
+
+' L'ente interagisce con le segnalazioni create
+Ente --> RF1_0 
+
+' L'admin gestisce l'invio notifiche derivanti dalle segnalazioni
+RF1_1 <-- Admin
+
+@enduml

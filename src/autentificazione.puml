@@ -1,0 +1,36 @@
+@startuml SB0_Autenticazione
+left to right direction
+skinparam packageStyle rectangle
+
+' Stile
+skinparam usecase {
+    BackgroundColor White
+    BorderColor DarkSlateGray
+    ArrowColor Black
+}
+
+' Attori
+actor "Cicloturista" as User
+actor "Ente Pubblico" as Ente
+actor "Admin Piattaforma" as Admin 
+
+rectangle "SB0 - Autenticazione" {
+    usecase "RF0.2 - Login" as RF0_2
+    usecase "RF0.0 - Registrazione\ncicloturista" as RF0_0
+    usecase "RF0.1 - Registrazione\nutente privilegiato" as RF0_1
+    usecase "RF0.2.0 - Login provider\nesterni" as RF0_2_0
+    
+    ' Relazioni interne
+    RF0_2_0 .> RF0_2 : <<extend>>
+}
+
+' Relazioni Esterne
+User --> RF0_0
+User --> RF0_2
+
+Ente --> RF0_2
+
+RF0_1 <-- Admin
+RF0_2 <-- Admin
+
+@enduml

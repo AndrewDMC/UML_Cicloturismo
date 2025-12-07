@@ -1,32 +1,70 @@
-@startuml Esplorazione
+@startuml SB2_Esplorazione
+left to right direction
+skinparam packageStyle rectangle
 
-left to right direction 
-skinparam packageStyle rectangle 
-skinparam linetype ortho  
+' Stile
+skinparam usecase {
+    BackgroundColor White
+    BorderColor DarkSlateGray
+    ArrowColor Black
+}
 
-actor "Cicloturista" as User 
-actor "Ente Pubblico" as Ente 
+' Attori
+actor "Cicloturista" as User
+actor "Ente Pubblico" as Ente
+actor "Admin Piattaforma" as Admin 
 
-rectangle "UCD2 - Esplorazione e Mappe" { 
+rectangle "SB2 - Esplorazione percorsi" {
+    
+    ' Sottogruppo Mappa
+    package "Visualizzazione" {
+        usecase "RF2.0 - Visualizzatore mappa" as RF2_0
+        usecase "RF2.1 - POI" as RF2_1
+        usecase "RF2.7 - Audiodescrizione" as RF2_7
+        usecase "RF3 - Meteo area" as RF3
+    }
 
-    usecase "RF5 - Esplorazione percorsi" as RF5 
-    usecase "RF2 - Visualizzatore mappa" as RF2 
-    usecase "RF3 - Visualizzatore meteo" as RF3 
-    usecase "RF4 - Visualizzatore POI" as RF4 
-    usecase "RF19 - Audiodescrizione" as RF19 
-    usecase "RF17 - Bacheca eventi" as RF17 
+    ' Sottogruppo Community
+    package "Community e Bacheche" {
+        usecase "RF2.2 - Bacheca itinerari" as RF2_2
+        usecase "RF4 - Bacheca Eventi" as RF4
+        usecase "RF2.6 - Inserimento\nrecensione" as RF2_6
+    }
+    
+    ' Sottogruppo Gestione Itinerari
+    package "Gestione Itinerari" {
+        usecase "RF2.3 - Creazione itinerari\n(Base esistente)" as RF2_3
+        usecase "RF2.3.0 - Copia privata" as RF2_3_0
+        usecase "RF2.3.1 - Modifica privata" as RF2_3_1
+        usecase "RF2.3.2 - Pubblicazione" as RF2_3_2
+        usecase "RF2.4 - Creazione itinerari\n(Recording)" as RF2_4
+        usecase "RF2.5 - Gestione storico" as RF2_5
+    }
+    
+    usecase "RF5 - Raccolta dati" as RF5
 
-} 
+    ' Relazioni interne (Visualizzazione)
+    RF2_1 .up.> RF2_0 : <<extend>>
+    RF2_7 .up.> RF2_0 : <<extend>>
+    RF3 .up.> RF2_0 : <<extend>>
 
-User --> RF5 
-Ente --> RF17 
+    ' Relazioni interne (Itinerari)
+    RF2_3 .up.> RF2_2 : <<extend>>
+    RF2_6 .up.> RF2_2 : <<extend>>
+    
+    RF2_3_0 .up.> RF2_3 : <<include>>
+    RF2_3_1 .up.> RF2_3 : <<include>>
+    RF2_3_2 .down.> RF2_3 : <<extend>>
+}
 
-' Relazioni 
+' Relazioni Esterne
+User --> RF2_0
+User --> RF2_2
+User --> RF2_4
+User --> RF2_5
 
-RF5 ..> RF2 : <<include>>
-RF3 ..> RF5 : <<extend>> 
-RF4 ..> RF5 : <<extend>> 
-RF19 ..> RF5 : <<extend>> 
-RF17 ..> RF5 : <<extend>> 
+Ente --> RF4
 
-@enduml 
+RF5 <-- Admin
+
+@enduml
